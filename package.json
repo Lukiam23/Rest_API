@@ -1,0 +1,22 @@
+{
+  "name": "rest",
+  "version": "1.0.0",
+  "description": "desafio Greenmile",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lukiam23/Rest_API.git"
+  },
+  "author": "Matheus Sousa Correia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lukiam23/Rest_API/issues"
+  },
+  "homepage": "https://github.com/Lukiam23/Rest_API#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
