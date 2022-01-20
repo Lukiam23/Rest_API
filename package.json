@@ -4,7 +4,8 @@
   "description": "desafio Greenmile",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,14 @@
   },
   "homepage": "https://github.com/Lukiam23/Rest_API#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "jest": "^27.4.7",
+    "morgan": "^1.10.0",
+    "pg-promise": "^10.11.1",
+    "postgresql": "0.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
