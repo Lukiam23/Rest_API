@@ -12,32 +12,17 @@ exports.deleteRoute = function (id){
 	return db.result(`delete from routes where route_id = ${id}`, [123], r => r.rowCount );
 }
 
-exports.postRoute = function (id,date,status,stops){
-	const inserirRotas = db.query(`insert into routes values('${id}', '${date}', '${status}')`)
+exports.postRoute = async function (id,date,status,stops){
+	const inserirRotas = await db.many(`insert into routes values('${id}', '${date}', '${status}') RETURNING route_id`)
 
-	db.tx(t => {
-	    const queries = stops.map(stop => {
-	        return t.one(`insert into stops values(DEFAULT, ${id}, '${stop['description']}', ${stop['latitude']}, ${stop['longitude']}, '${stop['status']}', ${stop['deliveryradius']} ) RETURNING stop_id`,
-	                       stop, a => +a.id);
-	    });
-	    console.log("finish")
-	    return t.batch(queries);
-	})
-    .then(data => {
-        console.log(data)
-    })
-    .catch(error => {
-        // ERROR
-    });
-
-	/*stops.map( function (stop){ 
-	
-		db.result(`insert into stops values(DEFAULT, ${id}, ${stop['description']}, ${stop['latitude']}, ${stop['longitude']}, ${stop['status']}, ${stop['deliveryradius']} ) RETURNING stop_id`);
-
+	stops.map( async function (stop){ 
+		
+		const stop_id = await db.many(`insert into stops values(DEFAULT, ${id}, '${stop['description']}', ${stop['latitude']}, ${stop['longitude']}, '${stop['status']}', ${stop['deliveryradius']} ) RETURNING stop_id`);
+		console.log(stop_id[0].stop_id)
 		const [street, number, district, city, uf, zip1,zip2] = stop['address'];
-
-		db.query(`insert into addresses values(DEFAULT, ${stop_id}, ${street}, ${number}, ${district}, ${city}, ${uf}, ${zip1}-${zip2})`);
-	});*/
+		//console.log(`insert into addresses values(DEFAULT, ${stop_id[0][stop_id]}, '${street}', ${number}, '${district}', '${city}', '${uf}', '${zip1}-${zip2}')`)
+		db.query(`insert into addresses values(DEFAULT, ${stop_id[0].stop_id}, '${street}', ${number}, '${district}', '${city}', '${uf}', '${zip1}-${zip2}')`);
+	});
 
 	return inserirRotas;
 }
