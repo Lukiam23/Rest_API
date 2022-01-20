@@ -8,13 +8,19 @@ router.get('/Route', async function (req,res){
 });
 
 router.delete('/Route/:id', async function (req,res){
+	const response = await routesService.deleteRoute(req.params.id);
+	res.json(response)
 
 });
+
 router.put('/Route/:id', async function (req,res){
 
 });
-router.post('/Route', async function (req,res){
 
+router.post('/Route', async function (req,res){
+	const response = await routesService.postRoute(req.body.id,req.body.date,req.body.status,req.body.stops);
+	res.json(response);
+	
 });
 
 module.exports = router
