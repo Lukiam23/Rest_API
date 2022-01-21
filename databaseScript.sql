@@ -26,5 +26,5 @@ CREATE TABLE Stops(
 
 
 INSERT INTO routes VALUES(1, '2021-10-14', 'NOT_STARTED');
-INSERT INTO stops VALUES(DEFAULT, 1, 'X do João', 'Av. Washington Soares, 723 - Edson Queiroz, Fortaleza - CE', 60811-341 , -3.7625982, -38.4841062, 'NOT_ANSWER',10);
-INSERT INTO stops VALUES(DEFAULT, 1, 'Galeto Prime - Delivery iFood', 'Rua Professor Eládio Magalhães, 213 - Edson Queiroz, Fortaleza - CE' , 60811-460, -3.751316, -38.51507, 'NOT_ANSWER',30);
+INSERT INTO stops VALUES(DEFAULT, 1, 'X do João', 'Av. Washington Soares, 723 - Edson Queiroz, Fortaleza - CE, 60811-341' , -3.7625982, -38.4841062, 'NOT_ANSWER',10);
+INSERT INTO stops VALUES(DEFAULT, 1, 'Galeto Prime - Delivery iFood', 'Rua Professor Eládio Magalhães, 213 - Edson Queiroz, Fortaleza - CE , 60811-460' , -3.751316, -38.51507, 'NOT_ANSWER',30);
