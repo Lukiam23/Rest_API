@@ -13,6 +13,7 @@ CREATE TABLE Stops(
 	stop_id SERIAL PRIMARY KEY,
 	route_id SERIAL,
 	description TEXT,
+	address TEXT,
 	latitude decimal_latitude NOT NULL,
 	longitude decimal_longitude NOT NULL,
 	status VARCHAR(12) NOT NULL CHECK (status = 'NOT_ANSWER' or status = 'ANSWER'),
@@ -23,22 +24,7 @@ CREATE TABLE Stops(
 
 );
 
-CREATE TABLE Addresses(
-	address_id SERIAL PRIMARY KEY,
-	stop_id SERIAL,
-	street TEXT,
-	number INT,
-	distric TEXT,
-	city TEXT,
-	UF VARCHAR(10),
-	zipcode VARCHAR(15),
-	CONSTRAINT fk_stop
-		FOREIGN KEY(stop_id)
-			REFERENCES Stops(stop_id) ON DELETE CASCADE
-);
 
 INSERT INTO routes VALUES(1, '2021-10-14', 'NOT_STARTED');
-INSERT INTO stops VALUES(DEFAULT, 1, 'X do João', -3.7625982, -38.4841062, 'NOT_ANSWER',10);
-INSERT INTO addresses VALUES(DEFAULT, 1,'Av. Washington Soares', 723,'Edson Queiroz', 'Fortaleza','CE', '60811-341');
-INSERT INTO stops VALUES(DEFAULT, 1, 'Galeto Prime - Delivery iFood', -3.751316, -38.51507, 'NOT_ANSWER',30);
-INSERT INTO addresses VALUES(DEFAULT, 2,'Rua Professor Eládio Magalhães', 213,'Edson Queiroz', 'Fortaleza','CE', '60811-460');
+INSERT INTO stops VALUES(DEFAULT, 1, 'X do João', 'Av. Washington Soares, 723 - Edson Queiroz, Fortaleza - CE', 60811-341 , -3.7625982, -38.4841062, 'NOT_ANSWER',10);
+INSERT INTO stops VALUES(DEFAULT, 1, 'Galeto Prime - Delivery iFood', 'Rua Professor Eládio Magalhães, 213 - Edson Queiroz, Fortaleza - CE' , 60811-460, -3.751316, -38.51507, 'NOT_ANSWER',30);

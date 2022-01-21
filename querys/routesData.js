@@ -1,11 +1,11 @@
 const db = require('../infra/database');
 
 exports.getRoutes = function (){
-	return db.query('select * from routes');
+	return db.query('select * from routes as r join stops as s on r.route_id=s.route_id;');
 }
 
-exports.getStops = function (){
-	return db.query('select s.route_id, s.description, ad.street, ad.number, ad.distric, ad.city, ad.uf, ad.zipcode, s.latitude, s.longitude, s.deliveryradius from stops as s join addresses as ad on s.stop_id=ad.stop_id;');
+exports.getRoute = function (id){
+	return db.query(`select * from routes as r join stops as s on r.route_id=s.route_id where r.route_id = ${id};`);
 }
 
 exports.deleteRoute = function (id){
@@ -13,22 +13,21 @@ exports.deleteRoute = function (id){
 }
 
 exports.postRoute = function (id,date,status,stops){
-
-
-	return db.task(t => {
-	    return t.oneOrNone(`insert into routes values('${id}', '${date}', '${status}') RETURNING route_id`, 123)
-	        .then( data => {
-	            stops.map( async function (stop){ 
-					id = await t.oneOrNone(`insert into stops values(DEFAULT, ${id}, '${stop['description']}', ${stop['latitude']}, ${stop['longitude']}, '${stop['status']}', ${stop['deliveryradius']} ) RETURNING stop_id`)
-					console.log(id)
-	        	});
-	        })
-	})
-    .then(events => {
-        return "Sucesso total"
+	return db.tx( t => {
+		return t.oneOrNone(`insert into routes values('${id}', '${date}', '${status}') RETURNING route_id`, 123)
+				.then(data => {
+				    return t.batch([ stops.map( stop => t.none(`insert into stops values(DEFAULT, ${id}, '${stop['description']}', '${stop['address']}', ${stop['latitude']}, ${stop['longitude']}, '${stop['status']}', ${stop['deliveryradius']} )`) )])
+				});
+    })
+    .then(data => {
+        return "Rota inserida"
     })
     .catch(error => {
         return error
     });
+}
 
+exports.patchRoute = function(id,status){
+	console.log(`UPDATE routes SET status='${status}' where routes.route_id = ${id}`);
+	return db.query(`UPDATE routes SET status='${status}' where routes.route_id = ${id}`);
 }

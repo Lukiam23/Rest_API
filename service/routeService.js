@@ -2,17 +2,33 @@ const routesQuery = require('../querys/routesData')
 
 
 exports.getRoutes = async function () {
-	const allRoutes = await routesQuery.getRoutes();
-	const allStops =  await routesQuery.getStops();
+	const routesData = await routesQuery.getRoutes();
+	let dictionary = {}
+	routesData.map( row => {
+		if(!Object.keys(dictionary).includes(`${row.route_id}`)){
+			dictionary[row.route_id] = {id:row.route_id, date:row.date, status:row.status, stops: []};
+		}
+		
+		dictionary[row.route_id].stops.push({description:row.description, address:row.address, latitude:row.latitude, longitude:row.longitude, status:row.status, deliveryRadius:row.deliveryRadius });
+
+	})
+	return Object.values(dictionary);
 	
-	return allRoutes.map( routeData => {
-		return {
-			id: routeData['route_id'],
-			date: routeData['date'],
-			status: routeData['status'],
-			stops: allStops.filter(stopData => stopData['route_id'] === routeData['route_id'])
-		};
-	});
+};
+
+exports.getRoute = async function (id) {
+	const routesData = await routesQuery.getRoute(id);
+	let dictionary = {}
+	routesData.map( row => {
+		if(!Object.keys(dictionary).includes(`${row.route_id}`)){
+			dictionary[row.route_id] = {id:row.route_id, date:row.date, status:row.status, stops: []};
+		}
+		
+		dictionary[row.route_id].stops.push({description:row.description, address:row.address, latitude:row.latitude, longitude:row.longitude, status:row.status, deliveryRadius:row.deliveryRadius });
+
+	})
+	return Object.values(dictionary);
+	
 };
 
 exports.deleteRoute = async function (id) {
@@ -31,11 +47,9 @@ exports.postRoute = async function (id,date,status,stops){
 
 	if(!isValid) return "Longitude ou Latitude inválidas";
 
-	stops.map(stop => {
-		stop['address'] = stop['address'].split(/[-,',']/);
-	});
-
 	return routesQuery.postRoute(id,date,status,stops);
+}
 
-
+exports.patchRoute = async function (id,status){
+	return routesQuery.patchRoute(id,status);
 }

@@ -7,14 +7,20 @@ router.get('/Route', async function (req,res){
 	res.json(routes);
 });
 
+router.get('/Route/:id', async function (req,res){
+	const route = await routesService.getRoute(req.params.id);
+	res.json(route);
+});
+
 router.delete('/Route/:id', async function (req,res){
 	const response = await routesService.deleteRoute(req.params.id);
 	res.json(response)
 
 });
 
-router.put('/Route/:id', async function (req,res){
-
+router.patch('/Route', async function (req,res){
+	const response = await routesService.patchRoute(req.body.id,req.body.status);
+	res.json(response);
 });
 
 router.post('/Route', async function (req,res){
