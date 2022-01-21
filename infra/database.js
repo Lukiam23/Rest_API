@@ -4,7 +4,7 @@ const db = promise({
 		password: '@Matheus23',
 		host: 'localhost',
 		port: 5432,
-		database:'Greenmile'
+		database:'greenmile'
 });
 
 

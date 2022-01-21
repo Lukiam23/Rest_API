@@ -12,17 +12,23 @@ exports.deleteRoute = function (id){
 	return db.result(`delete from routes where route_id = ${id}`, [123], r => r.rowCount );
 }
 
-exports.postRoute = async function (id,date,status,stops){
-	const inserirRotas = await db.many(`insert into routes values('${id}', '${date}', '${status}') RETURNING route_id`)
+exports.postRoute = function (id,date,status,stops){
 
-	stops.map( async function (stop){ 
-		
-		const stop_id = await db.many(`insert into stops values(DEFAULT, ${id}, '${stop['description']}', ${stop['latitude']}, ${stop['longitude']}, '${stop['status']}', ${stop['deliveryradius']} ) RETURNING stop_id`);
-		console.log(stop_id[0].stop_id)
-		const [street, number, district, city, uf, zip1,zip2] = stop['address'];
-		//console.log(`insert into addresses values(DEFAULT, ${stop_id[0][stop_id]}, '${street}', ${number}, '${district}', '${city}', '${uf}', '${zip1}-${zip2}')`)
-		db.query(`insert into addresses values(DEFAULT, ${stop_id[0].stop_id}, '${street}', ${number}, '${district}', '${city}', '${uf}', '${zip1}-${zip2}')`);
-	});
 
-	return inserirRotas;
+	return db.task(t => {
+	    return t.oneOrNone(`insert into routes values('${id}', '${date}', '${status}') RETURNING route_id`, 123)
+	        .then( data => {
+	            stops.map( async function (stop){ 
+					id = await t.oneOrNone(`insert into stops values(DEFAULT, ${id}, '${stop['description']}', ${stop['latitude']}, ${stop['longitude']}, '${stop['status']}', ${stop['deliveryradius']} ) RETURNING stop_id`)
+					console.log(id)
+	        	});
+	        })
+	})
+    .then(events => {
+        return "Sucesso total"
+    })
+    .catch(error => {
+        return error
+    });
+
 }
