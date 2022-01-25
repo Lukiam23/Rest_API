@@ -6,7 +6,7 @@ create domain decimal_longitude decimal(9,6);
 CREATE TABLE Routes(
 	route_id SERIAL PRIMARY KEY,
 	date DATE NOT NULL,
-	status VARCHAR(12) NOT NULL CHECK (status = 'NOT_STARTED' or status = 'STARTED')
+	route_status VARCHAR(12) NOT NULL CHECK (route_status = 'NOT_STARTED' or route_status = 'STARTED')
 );
 
 CREATE TABLE Stops(
@@ -16,7 +16,7 @@ CREATE TABLE Stops(
 	address TEXT,
 	latitude decimal_latitude NOT NULL,
 	longitude decimal_longitude NOT NULL,
-	status VARCHAR(12) NOT NULL CHECK (status = 'NOT_ANSWER' or status = 'ANSWER'),
+	stop_status VARCHAR(12) NOT NULL CHECK (stop_status = 'NOT_ANSWER' or stop_status = 'ANSWER'),
 	deliveryRadius INTEGER,
 	CONSTRAINT fk_route
 		FOREIGN KEY(route_id)

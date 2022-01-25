@@ -5,11 +5,12 @@ exports.getRoutes = async function () {
 	const routesData = await routesQuery.getRoutes();
 	let dictionary = {}
 	routesData.map( row => {
+		console.log(row)
 		if(!Object.keys(dictionary).includes(`${row.route_id}`)){
-			dictionary[row.route_id] = {id:row.route_id, date:row.date, status:row.status, stops: []};
+			dictionary[row.route_id] = {id:row.route_id, date:row.date, status:row.route_status, stops: []};
 		}
 		
-		dictionary[row.route_id].stops.push({description:row.description, address:row.address, latitude:row.latitude, longitude:row.longitude, status:row.status, deliveryRadius:row.deliveryRadius });
+		dictionary[row.route_id].stops.push({description:row.description, address:row.address, latitude:Number(row.latitude), longitude:Number(row.longitude), status:row.stop_status, deliveryRadius:row.deliveryradius });
 
 	})
 	return Object.values(dictionary);
@@ -21,10 +22,10 @@ exports.getRoute = async function (id) {
 	let dictionary = {}
 	routesData.map( row => {
 		if(!Object.keys(dictionary).includes(`${row.route_id}`)){
-			dictionary[row.route_id] = {id:row.route_id, date:row.date, status:row.status, stops: []};
+			dictionary[row.route_id] = {id:row.route_id, date:row.date, status:row.route_status, stops: []};
 		}
 		
-		dictionary[row.route_id].stops.push({description:row.description, address:row.address, latitude:row.latitude, longitude:row.longitude, status:row.status, deliveryRadius:row.deliveryRadius });
+		dictionary[row.route_id].stops.push({description:row.description, address:row.address, latitude:Number(row.latitude), longitude:Number(row.longitude), status:row.stop_status, deliveryRadius:row.deliveryradius });
 
 	})
 	return Object.values(dictionary);
